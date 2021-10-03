@@ -1,0 +1,175 @@
+<div *ngIf="authService.isSystemAdmin()">
+  <div class="card my-4">
+    <div class="card-header bg-light">
+      <ul class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link" id="create-test-tab" data-toggle="tab" href="#create-test" role="tab"
+            aria-controls="create-test" aria-selected="true">Create Test</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="view-tests-tab" data-toggle="tab" href="#view-tests" role="tab"
+            aria-controls="view-tests" aria-selected="false">Tests</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card-body">
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="create-test" role="tabpanel" aria-labelledby="create-test-tab">
+          <div class="d-flex justify-center card border-0 align-items-center">
+            <div class="mb-3 p-4 w-50  align-items-center">
+              <form [formGroup]="form" (ngSubmit)="onSubmitForm()" *ngIf="authService.isSystemAdmin()">
+                <div class="form-group">
+                  <label for="testName">Test Name</label>
+                  <input type="text" formControlName="testName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && formController.testName.errors }" />
+                  <div *ngIf="submitted && formController.testName.errors" class="invalid-feedback">
+                    <div *ngIf="formController.testName.errors.required">Test Name is required</div>
+                    <div *ngIf="formController.testName.errors.pattern">Valid Test Name is required</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="employeeId">Employee Id</label>
+                  <input type="text" formControlName="employeeId" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && formController.employeeId.errors }" />
+                  <div *ngIf="submitted && formController.employeeId.errors" class="invalid-feedback">
+                    <div *ngIf="formController.employeeId.errors.required">Employee Id is required</div>
+                    <div *ngIf="formController.employeeId.errors.pattern">Valid Employee Id is required</div>
+                  </div>
+                </div>
+                <fieldset class="form-group my-5">
+                  <div class="dropdown form-group">
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">{{this.difficulty}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" (click)="changeDifficulty('Easy')">Easy</a>
+                      <a class="dropdown-item" (click)="changeDifficulty('Moderate')">Moderate</a>
+                      <a class="dropdown-item" (click)="changeDifficulty('Challenging')">Challenging</a>
+                    </div>
+                    <div *ngIf="submitted && formController.difficultyLevel.errors" class="text-danger text-sm">
+                      <div *ngIf="formController.difficultyLevel.errors.required">Difficulty Level required</div>
+                    </div>
+                  </div>
+
+                  <div class="dropdown form-group">
+                    <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">{{this.testCategory}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" (click)="changeTestCategory('Core Java Basics')">Core Java Basics</a>
+                      <a class="dropdown-item" (click)="changeTestCategory('Java Testing')">Java Testing</a>
+                      <a class="dropdown-item" (click)="changeTestCategory('NET Testing')">.NET Testing</a>
+                      <a class="dropdown-item" (click)="changeTestCategory('MongoDB Testing')">MongoDB Testing</a>
+                    </div>
+                    <div *ngIf="submitted && formController.testCategory.errors" class="text-danger text-sm">
+                      <div *ngIf="formController.testCategory.errors.required">Test Category required</div>
+                    </div>
+                  </div>
+
+                </fieldset>
+                <div class="form-group">
+                  <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Create Test
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-pane fade" id="view-tests" role="tabpanel" aria-labelledby="view-tests-tab">
+          <div class="my-3">
+            <div>
+              <h3>Assigned Tests</h3>
+            </div>
+            <table class="table table-hover" *ngIf="tests">
+              <thead>
+                <tr>
+                  <th scope="col">Test Name</th>
+                  <th scope="col">Test Category</th>
+                  <th scope="col">Test Difficulty</th>
+                  <th scope="col">Assigned To Employee ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let test of tests">
+                  <td>{{test.testName}}</td>
+                  <td>{{test.testCategory}}</td>
+                  <td>{{test.testDifficulty}}</td>
+                  <td>{{test.emp.employeeID}}</td>
+                  <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-info btn-sm" (click)="onView(test)"
+                      data-target="#exampleModalCenter">
+                      View Test
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="loadingTests" class="d-flex justify-content-center p-3">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="!authService.isSystemAdmin()">
+  <div class="card-header bg-light">
+    <ul class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="view-tests-tab" data-toggle="tab" href="#view-tests" role="tab"
+          aria-controls="view-tests" aria-selected="true">Tests</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="create-test" role="tabpanel" aria-labelledby="create-test-tab">
+        <div class="my-3">
+          <div>
+            <h3>Assigned Tests</h3>
+          </div>
+          <table class="table table-hover" *ngIf="tests">
+            <thead>
+              <tr>
+                <th scope="col">Test Name</th>
+                <th scope="col">Test Category</th>
+                <th scope="col">Test Difficulty</th>
+                <th scope="col">Assigned To Employee ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let test of tests">
+                <td>{{test.testName}}</td>
+                <td>{{test.testCategory}}</td>
+                <td>{{test.testDifficulty}}</td>
+                <td>{{test.emp.employeeID}}</td>
+                <td>
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-info btn-sm" (click)="onView(test)"
+                    data-target="#exampleModalCenter">
+                    View Test
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="loadingTests" class="d-flex justify-content-center p-3">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

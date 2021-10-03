@@ -1,0 +1,38 @@
+<div class="">
+    <div class="d-flex justify-center card border-0 align-items-center">
+        <div class="">
+            <button *ngIf="currentQuesIndex < 0" class="btn btn-success btn-lg" (click)="progressTest(1)">Start
+                Test</button>
+        </div>
+        <div id="currentQues" *ngIf="questions">
+            <div class="card bg-light mb-3" *ngIf="currentQues">
+                <div class="card-header"><strong>Question</strong></div>
+                <div class="card-body">
+                    <h5 class=" card-title">{{currentQues.questionStatement}}</h5>
+                    <div class="d-flex">
+                        <div class="form-check mx-3 block" *ngFor="let option of currentQues.possibleAnswers">
+                            <input class="form-check-input" type="radio"
+                                (click)="markAnswer(option, currentQues.questionId)" name="gridRadios" id="gridRadios1"
+                                [checked]="getMarkedAnswer(currentQues.questionId) == option">
+                            <label class="form-check-label" for="gridRadios1">
+                                {{option}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center p-3">
+                    <button class="btn btn-info mx-1" [disabled]="currentQuesIndex <= 0"
+                        (click)="progressTest(-1)">Prev</button>
+                    <button class="btn btn-info mx-1" [disabled]="currentQuesIndex >= 13"
+                        (click)="progressTest(1)">Next</button>
+                </div>
+                <div class="d-flex justify-content-center p-3" *ngIf="currentQuesIndex == 13">
+                    <button [disabled]="testSubmitted" class="btn btn-danger" (click)="submitTest()">
+                        <span *ngIf="testSubmitted" class="spinner-border spinner-border-sm mr-1"></span>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="my-3">
+    <div>
+        <div>
+            <div>
+                <div>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Result</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col d-flex justify-content-center m-4">
+                        <div class="card-body w-auto row">
+                            <div>
+                                <p class="card-title">Test Name</p>
+                                <div class="my-5">
+                                    <p class="card-text">Test Difficulty</p>
+                                </div>
+                                <div class="my-5">
+                                    <p class="card-text">Test Category</p>
+                                </div>
+                                <div class="my-5">
+                                    <p class="card-text">Test Score</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body w-auto row">
+                            <div>
+                                <p class="card-title">{{this.test.testName}}</p>
+                                <div class="my-5">
+                                    <p class="card-text">{{this.test.testDifficulty}}</p>
+                                </div>
+                                <div class="my-5">
+                                    <p class="card-text">{{this.test.testCategory}}</p>
+                                </div>
+                                <div class="my-5">
+                                    <p *ngIf="test.isTestAttempted">
+                                        {{this.test.testScore }} / 15 </p>
+                                    <p *ngIf="!test.isTestAttempted" class="text-danger">
+                                        Test not yet attempted by the employee
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" [disabled]="loadingAttemptTest" id="attemptTest"
+                            [disabled]="!authService.isEmployee() || test.isTestAttempted" class="btn btn-success"
+                            (click)="attemptTest()">
+                            <span *ngIf="loadingAttemptTest" class="spinner-border spinner-border-sm mr-1"></span>
+                            Attempt Test
+                        </button>
+                    </div>
+                </div>
+                <div class="test.isTestAttempted">
+                    <div *ngIf="loadingQuestions" class="d-flex justify-content-center p-3">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="questions && markedAnswers">
+                        <div class="card bg-light my-3" *ngFor="let ques of questions">
+                            <div class="card-header"><strong>Question</strong></div>
+                            <div class="card-body">
+                                <h5 class=" card-title">{{ques.questionStatement}}</h5>
+                                <div class="d-flex">
+                                    <div class="form-check mx-3 block" *ngFor="let option of ques.possibleAnswers">
+                                        <input class="form-check-input" type="radio" [disabled]="true" name="gridRadios"
+                                            id="gridRadios1">
+                                        <label class="form-check-label" for="gridRadios1">
+                                            {{option}}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div *ngIf="markedAnswers">
+                                    <strong>Marked Answer: {{this.markedAnswers[ques.questionId]}}</strong>
+                                </div>
+                                <div class="strong text-success">
+                                    Correct Answer: {{getCorrectAnswer(ques.correctAnswer, ques)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+<div class="card my-4">
+  <div class="card-header bg-light"> 
+      <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
+          <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Create Question</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Questions</a>
+          </li>
+      </ul>
+  </div>
+
+  <div class="card-body">
+      <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="d-flex justify-center card border-0 align-items-center">
+              <div class="container my-4 w-75">
+                <h3>Create a Question</h3>
+                <div class="container">
+                  <form [formGroup]="form" (ngSubmit)="onSubmitForm()">
+                    <div class="form-group">
+                      <label for="username">Question Statement</label>
+                      <input type="text" formControlName="questionStatement" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formController.questionStatement.errors }" />
+                      <div *ngIf="submitted && formController.questionStatement.errors" class="invalid-feedback">
+                        <div *ngIf="formController.questionStatement.errors.required">Question statement is required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="option1">Option A</label>
+                      <input type="text" formControlName="option1" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formController.option1.errors }" />
+                      <div *ngIf="submitted && formController.option1.errors" class="invalid-feedback">
+                        <div *ngIf="formController.option1.errors.required">Option required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="option2">Option B</label>
+                      <input type="text" formControlName="option2" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formController.option2.errors }" />
+                      <div *ngIf="submitted && formController.option2.errors" class="invalid-feedback">
+                        <div *ngIf="formController.option2.errors.required">Option required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="option3">Option C</label>
+                      <input type="text" formControlName="option3" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formController.option3.errors }" />
+                      <div *ngIf="submitted && formController.option3.errors" class="invalid-feedback">
+                        <div *ngIf="formController.option3.errors.required">Option required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="option4">Option D</label>
+                      <input type="text" formControlName="option4" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formController.option4.errors }" />
+                      <div *ngIf="submitted && formController.option4.errors" class="invalid-feedback">
+                        <div *ngIf="formController.option4.errors.required">Option required</div>
+                      </div>
+                    </div>
+                    <div>
+                      <fieldset class="form-group">
+                        <div class="row">
+                          <legend class="col-form-label col-sm-2 pt-0">Correct Answer</legend>
+                          <div class="col-sm-10">
+                            <div class="d-flex">
+                              <div class="form-check mx-3">
+                                <input class="form-check-input" type="radio" (click)="setCorrectAnswer('A')" name="gridRadios"
+                                  id="gridRadios1">
+                                <label class="form-check-label" for="gridRadios1">
+                                  A
+                                </label>
+                              </div>
+                              <div class="form-check mx-3">
+                                <input class="form-check-input" type="radio" (click)="setCorrectAnswer('B')" name="gridRadios"
+                                  id="gridRadios2">
+                                <label class="form-check-label" for="gridRadios2">
+                                  B
+                                </label>
+                              </div>
+                              <div class="form-check mx-3">
+                                <input class="form-check-input" type="radio" (click)="setCorrectAnswer('C')" name="gridRadios"
+                                  id="gridRadios2">
+                                <label class="form-check-label" for="gridRadios2">
+                                  C
+                                </label>
+                              </div>
+                              <div class="form-check mx-3">
+                                <input class="form-check-input" type="radio" (click)="setCorrectAnswer('D')" name="gridRadios"
+                                  id="gridRadios2">
+                                <label class="form-check-label" for="gridRadios2">
+                                  D
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="submitted && formController.correctAnswer.errors" class="text-danger text-sm">
+                            <div *ngIf="formController.correctAnswer.errors.required">Correct Answer required</div>
+                          </div>
+                        </div>
+                      </fieldset>
+            
+                      <div class="dropdown form-group my-3">
+                        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false">{{this.ques.difficultyLevel ? this.ques.difficultyLevel : this.difficulty}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" (click)="changeDifficulty('Easy')">Easy</a>
+                          <a class="dropdown-item" (click)="changeDifficulty('Moderate')">Moderate</a>
+                          <a class="dropdown-item" (click)="changeDifficulty('Challenging')">Challenging</a>
+                        </div>
+                        <div *ngIf="submitted && formController.difficulty.errors" class="text-danger text-sm">
+                          <div *ngIf="formController.difficulty.errors.required">Difficulty Level required</div>
+                        </div>
+                      </div>
+                      <div class="dropdown form-group inline">
+                        <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false">{{this.ques.testCategory ? this.ques.testCategory : this.testCategory}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" (click)="changeTestCategory('Core Java Basics')">Core Java Basics</a>
+                          <a class="dropdown-item" (click)="changeTestCategory('Java Testing')">Java Testing</a>
+                          <a class="dropdown-item" (click)="changeTestCategory('NET Testing')">.NET Testing</a>
+                          <a class="dropdown-item" (click)="changeTestCategory('MongoDB Testing')">MongoDB Testing</a>
+                          <a class="dropdown-item" (click)="changeTestCategory('Other')">Other</a>
+                        </div>
+                        <div *ngIf="submitted && formController.testCategory.errors" class="text-danger text-sm">
+                          <div *ngIf="formController.testCategory.errors.required">Test Category required</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-center">
+                      <button [disabled]="loadingForm" class="btn btn-primary">
+                        <span *ngIf="loadingForm" class="spinner-border spinner-border-sm mr-1"></span>
+                        Create Question
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="my-3">
+              <div>
+                <h3>Added Questions</h3>
+              </div>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Question</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Difficulty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ques of questions">
+                    <td>{{ques.questionStatement}}</td>
+                    <td>{{ques.testCategory}}</td>
+                    <td>{{ques.difficultyLevel}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="loadingQuestions" class="d-flex justify-content-center p-3">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>

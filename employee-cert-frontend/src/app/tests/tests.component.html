@@ -1,0 +1,55 @@
+<div class="my-3">
+  <div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Results</h5>
+        </div>
+        <div class="modal-body">
+          <div class="col d-flex justify-content-center m-4">
+            <div class="card-body w-auto row">
+              <div>
+                <p class="card-title">Test Name</p>
+                <div class="my-5">
+                  <p class="card-text">Test Difficulty</p>
+                </div>
+                <div class="my-5">
+                  <p class="card-text">Test Category</p>
+                </div>
+                <div class="my-5">
+                  <p class="card-text">Test Score</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body w-auto row">
+              <div>
+                <p class="card-title">{{this.test.testName}}</p>
+                <div class="my-5">
+                  <p class="card-text">{{this.test.testDifficulty}}</p>
+                </div>
+                <div class="my-5">
+                  <p class="card-text">{{this.test.testCategory}}</p>
+                </div>
+                <div class="my-5">
+                  <p *ngIf="show" class="text-danger"> 
+                    {{this.test.isTestAttempted}} ?
+                    {{this.test.testScore }} :
+                    "Test not yet attempted by the employee"</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="attemptTest" [disabled]="authService.isSystemAdmin() || test.isTestAttempted"
+              class="btn btn-success" (click)="attemptTest(test)">Attempt Test</button>
+          </div>
+        </div>
+        <div *ngIf="loadingQuestions" class="d-flex justify-content-center p-3">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

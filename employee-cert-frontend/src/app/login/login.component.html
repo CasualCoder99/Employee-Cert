@@ -1,0 +1,44 @@
+<div class="container p-4">
+    <div class="p-4 w-100 card align-items-center border-0">
+        <div class="p-3 d-flex justify-content-center align-items-center">
+            <h4>
+                Welcome to ADP Learning
+            </h4>
+        </div>
+        <div class="alert alert-dismissible alert-danger" *ngIf="invalidLogin">
+            <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></span>
+            Wrong Login Credentials. Try Again.
+        </div>
+        <form [formGroup]="form" (ngSubmit)="handleLogin()">
+            <div class="form-group">
+                <label for="employeeId">Employee Id</label>
+                <input type="text" formControlName="employeeId" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && formController.employeeId.errors }" />
+                <div *ngIf="submitted && formController.employeeId.errors" class="invalid-feedback">
+                    <div *ngIf="formController.employeeId.errors.required">Employee Id is required</div>
+                    <div *ngIf="formController.employeeId.errors.pattern">Valid Employee Id is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && formController.password.errors }" />
+                <div *ngIf="submitted && formController.password.errors" class="invalid-feedback">
+                    <div *ngIf="formController.password.errors.required">Password is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Login
+                </button>
+
+                <a routerLink="/forgot-password" class="btn btn-warning ml-2 float-right">
+                    Forgot Your Password?
+                </a>
+            </div>
+        </form>
+    </div>
+
+</div>

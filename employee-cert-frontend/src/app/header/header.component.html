@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/home"><h3>ADP Learning</h3></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" 
+    aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav me-auto">
+        <li role="presentation" routerLinkActive="active">
+          <a *ngIf="authenticationService.isUserLoggedIn()" class="nav-link" routerLink="/home">Home</a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a *ngIf="authenticationService.isUserLoggedIn()" class="nav-link" routerLink="/profile">Profile</a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a *ngIf="!authenticationService.isUserLoggedIn()" class="nav-link" routerLink="/login">Login</a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a *ngIf="authenticationService.isUserLoggedIn()" class="nav-link" routerLink="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
